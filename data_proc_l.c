@@ -187,6 +187,8 @@ void ft_lputnbr_long(uintmax_t num)
 	uintmax_t x;
 
 	x = num;
+	if (x == 0)
+		ft_putchar('0');
 	if (x != 0) {
 		c = x % 10 + 48;
 		if (x / 10 > 0)
