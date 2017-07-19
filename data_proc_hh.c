@@ -59,6 +59,8 @@ int ft_hhproc_oct(t_arg *params, int i)
 	long int num;
 	char *res;
 
+	if (i == 0)
+		params->convert = 0;
 	num = ft_hhproc_types(i, params);
 	if (params->convert == 1 && params->prec <= 1)
 		params->width -= 1;

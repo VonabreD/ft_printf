@@ -272,6 +272,8 @@ int ft_lproc_oct(t_arg *params, uintmax_t i)
 	long int num;
 	char *res;
 
+	if (i == 0)
+		params->convert = 0;
 	num = i;
 	if (params->convert == 1 && params->prec <= 1)
 		params->width -= 1;

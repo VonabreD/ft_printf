@@ -17,10 +17,10 @@ int main(void) {
 	int i;
 
 	i = 0;
-	i = ft_printf("%9.0p", 1234567);
+	i = ft_printf("|%.3s|", "ABCDE");
 	printf("\n(%d)", i);
 	printf("\n------------------------------\n");
-	   i = printf("%9.0p", 1234567);
+	   i = printf("|%.3s|", "ABCDE");
 	printf("\n(%i)", i);
 //	printf ("Decimals:%#x %ld\n", 1977, 650000L);
 //	printf ("Preceding with blanks:%10d \n", 1977);

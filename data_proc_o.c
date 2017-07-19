@@ -166,6 +166,8 @@ int ft_proc_oct(t_arg *params, int i)
 	long long int num;
 	char *res;
 
+	if (i == 0)
+		params->convert = 0;
 	num = (long int)i;
 	if (i < 0)
 		num = 4294967296 + i;
