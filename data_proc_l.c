@@ -80,7 +80,7 @@ int ft_count_bits(wchar_t c)
 	return (i);
 }
 
-int ft_putlchar(__darwin_wint_t sym)
+int ft_putlchar(wint_t sym)
 {
 	unsigned int mask[4];
 	unsigned int v;
