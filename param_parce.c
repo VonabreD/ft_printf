@@ -49,6 +49,7 @@ int	ft_parce_width(char *str, t_arg *params, int *cur_pos)
 		num[i - *cur_pos] = str[i];
 	params->width = ft_atoi(num);
 	*cur_pos = i;
+	free(num);
 	return (1);
 }
 
@@ -68,13 +69,14 @@ int	ft_parce_prec(char *str, t_arg *params, int *cur_pos)
 	}
 	while (ft_isdigit(str[i]))
 		i++;
-	num = (char *)malloc(sizeof(char *) * (i - *cur_pos + 1));
-	num[i - *cur_pos] = '\0';
-	i = *cur_pos - 1;
+	num = (char *)malloc(sizeof(char ) * (i - *cur_pos + 1));
+		i = *cur_pos - 1;
 	while (ft_isdigit(str[++i]))
 		num[i - *cur_pos] = str[i];
+	num[i - *cur_pos] = '\0';
 	params->prec = ft_atoi(num);
 	*cur_pos = i;
+	free (num);
 	return (1);
 }
 
@@ -141,6 +143,9 @@ int	ft_parse(char *str, t_arg *params)
 		i[2] = ft_parce_prec(str, params, &cur_pos);
 		i[3] = ft_parce_len(str, params, &cur_pos);
 	}
+	params->sym = str[cur_pos];
+	if (params->sym == '\0')
+		return (0);
 	if (spec_pos < 0)
 		return (cur_pos + 1);
 	return (spec_pos);

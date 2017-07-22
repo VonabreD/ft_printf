@@ -26,9 +26,9 @@ int ft_proc_str(t_arg *params, char *str)
 
 	if (str == NULL)
 		str = "(null)";
-	if (params->prec == -1)
+	if ((params->prec > (int)ft_strlen(str) || params->prec == -1))
 		i = (int)ft_strlen(str);
-	if (params->prec > -1 && ft_strlen(str) > 0)
+	else
 		i = params->prec;
 	if (params->width == -1)
 		ft_putstr(str, params->prec);

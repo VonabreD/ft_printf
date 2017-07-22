@@ -58,27 +58,30 @@ int ft_hproc_oct(t_arg *params, int i)
 {
 	long int num;
 	char *res;
+	int j;
 
-	if (i == 0)
+	if (i == 0 && params->prec > 0)
 		params->convert = 0;
 	num = ft_hproc_types(i, params);
 	if (params->convert == 1 && params->prec <= 1)
 		params->width -= 1;
 	res = ft_convert(num, 8, params->prec);
+	j = (int)ft_strlen(res);
 	if (params->right_al == 1)
 		ft_pr_oct_f(params, res);
 	else
 		ft_pr_oct_s(params, res);
 	free(res);
 	if (params->convert == 1 && params->prec <= 1)
-		return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)) + 1);
-	return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)));
+		return (ft_ret_big(params->width, params->prec, j));
+	return (ft_ret_big(params->width, params->prec, j));
 }
 
 int ft_hproc_hex(t_arg *params, int i)
 {
 	long int num;
 	char *res;
+	int j;
 
 	if (i == 0)
 		params->convert = 0;
@@ -86,6 +89,7 @@ int ft_hproc_hex(t_arg *params, int i)
 	if (params->convert == 1)
 		params->width -= 2;
 	res = ft_convert(num, 16, params->prec);
+	j = (int)ft_strlen(res);
 	if (params->spec == 'X')
 		ft_upcase(res);
 	if (params->right_al == 1)
@@ -94,12 +98,14 @@ int ft_hproc_hex(t_arg *params, int i)
 		ft_pr_hex_s(params, res);
 	free(res);
 	if (params->convert == 1)
-		return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)) + 2);
-	return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)));
+		return (ft_ret_big(params->width, params->prec, j));
+	return (ft_ret_big(params->width, params->prec, j));
 }
 
 int	ft_data_proc_h(t_arg *params, va_list *args)
 {
+	if (params->spec == '!')
+		return (ft_proc_c(params, params->sym));
 	if (params->spec == 'p')
 		return (ft_proc_p(params, va_arg(*args, void *)));
 	if (params->spec == 's')

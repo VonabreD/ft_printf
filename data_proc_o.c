@@ -141,6 +141,7 @@ char *ft_convert(uintmax_t num, int base, int prec)
 	i[0] = 0;
 	i[1] = 0;
 	str = (char *)malloc(sizeof(char) * 300);
+
 	if (num == 0)
 		str[(i[0])++] = '0';
 	if (num == 0 && prec == 0)
@@ -156,7 +157,7 @@ char *ft_convert(uintmax_t num, int base, int prec)
 	tmp = (char *)malloc(sizeof(char) * (i[0] + 1));
 	while (i[0]-- >= 0)
 		tmp[(i[1])++] = str[i[0]];
-	tmp[i[1]] = '\0';
+	tmp[i[1]- 1] = '\0';
 	free(str);
 	return (tmp);
 }
@@ -165,9 +166,10 @@ int ft_proc_oct(t_arg *params, int i)
 {
 	long long int num;
 	char *res;
+	int j;
 
-	if (i == 0)
-		params->convert = 0;
+	if (i == 0 && params->convert == 1)
+		params->prec = 0;
 	num = (long int)i;
 	if (i < 0)
 		num = 4294967296 + i;
@@ -176,14 +178,15 @@ int ft_proc_oct(t_arg *params, int i)
 	if (params->convert == 1 && params->prec <= 1)
 		params->width -= 1;
 	res = ft_convert(num, 8, params->prec);
+	j = (int)ft_strlen(res);
 	if (params->right_al == 1)
 		ft_pr_oct_f(params, res);
 	else
 		ft_pr_oct_s(params, res);
 	free(res);
 	if (params->convert == 1 && params->prec <= 1)
-		return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)) + 1);
-	return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)));
+		return (ft_ret_big(params->width, params->prec, j) + 1);
+	return (ft_ret_big(params->width, params->prec, j));
 }
 
 int ft_pr_hex_s(t_arg *params, char *str)
@@ -270,6 +273,8 @@ int ft_proc_hex(t_arg *params, int i)
 {
 	long long int num;
 	char *res;
+	int j;
+
 
 	num = i;
 	if (i == 0)
@@ -281,6 +286,7 @@ int ft_proc_hex(t_arg *params, int i)
 	if (params->convert == 1)
 		params->width -= 2;
 	res = ft_convert(num, 16, params->prec);
+	j = (int)ft_strlen(res);
 	if (params->spec == 'X')
 		 res = ft_upcase(res);
 	if (params->right_al == 1)
@@ -289,8 +295,8 @@ int ft_proc_hex(t_arg *params, int i)
 		ft_pr_hex_s(params, res);
 	free(res);
 	if (params->convert == 1)
-		return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)) + 2);
-	return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)));
+		return (ft_ret_big(params->width, params->prec, j) + 2);
+	return (ft_ret_big(params->width, params->prec, j));
 }
 
 int ft_ret_big(int a, int b, int c)
@@ -310,6 +316,7 @@ int ft_proc_p(t_arg *params, void *a)
 {
 	long i;
 	char *res;
+	int j;
 
 	i = (long) a;
 	params->convert = 1;
@@ -317,12 +324,15 @@ int ft_proc_p(t_arg *params, void *a)
 	if (params->convert == 1)
 		params->width -= 2;
 	res = ft_convert(i, 16, params->prec);
+	j = (int)ft_strlen(res);
 	if (params->right_al == 1)
 		ft_pr_hex_f(params, res);
 	else
 		ft_pr_hex_s(params, res);
 	free(res);
-	return ((ft_ret_big((int)ft_strlen(res), params->width, params->prec))+ 2);
+	if (params->prec == 0 && i == 0)
+		return ((ft_ret_big(j, params->width, params->prec)) + 2);
+	return ((ft_ret_big(j, params->width, params->prec)) + 2);
 
 }
 

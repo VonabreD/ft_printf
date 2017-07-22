@@ -12,13 +12,22 @@
 
 #include "ft_printf.h"
 
+int	ft_test_len(char *str, int i) {
+
+	if (str[i] == 'l' || str[i] == 'h' || str[i] == 'L' || str[i] == 'j' || str[i] == 'z')
+		return (1);
+	return (0);
+}
+
 int		ft_find_spec(char *str, t_arg *params)
 {
 	int i;
+	int j;
 
 	i = 0;
 	while (str[i] != '\0' && str[i] != '%')
 	{
+		j = i;
 		if (str[i] == 's' || str[i] == 'p' || str[i] == 'd' || str[i] == 'i' ||
 			str[i] == 'o' || str[i] == 'u' || str[i] == 'x' || str[i] == 'c' ||
 			str[i] == 'X')
@@ -33,6 +42,8 @@ int		ft_find_spec(char *str, t_arg *params)
 			params->len = 3;
 			return (++i);
 		}
+		if (ft_test_len(str, j) == 0 && ft_isalpha(str[i]))
+			return (-1);
 		i++;
 	}
 	return (-1);
@@ -92,9 +103,11 @@ int		ft_fprintf(const char *format, va_list *args)
 			write(1, &format[i], 1);
 			num++;
 		}
-		else {
+		else if (format[i] != '\0')
+		{
 			i += ft_parse((char *) &format[i + 1], &params);
-			num += ft_data_proc(&params, args);
+			if (params.sym != '\0')
+				num += ft_data_proc(&params, args);
 		}
 	}
 	return (num);

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 typedef struct s_arg{
 	char sym;
@@ -78,7 +79,7 @@ int ft_hhproc_oct(t_arg *params, int i);
 int ft_hhproc_int(t_arg *params, int i);
 long int ft_hhproc_types(int i, t_arg *params);
 
-void ft_putlstr(wchar_t *str);
+void ft_putlstr(wchar_t *str, int prec);
 int ft_strlen_l(wchar_t *str);
 int ft_proc_lstr(t_arg *params, wchar_t *str);
 int ft_count_bits(wchar_t c);

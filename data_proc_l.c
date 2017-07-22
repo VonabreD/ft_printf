@@ -12,12 +12,12 @@
 
 #include "ft_printf.h"
 
-void ft_putlstr(wchar_t *str)
+void ft_putlstr(wchar_t *str, int prec)
 {
 	int i;
 
 	i = 0;
-	while (str[i])
+	while (str[i] && prec--)
 	{
 		ft_putlchar(str[i]);
 		i++;
@@ -36,31 +36,34 @@ int ft_strlen_l(wchar_t *str)
 
 int ft_proc_lstr(t_arg *params, wchar_t *str)
 {
-	ssize_t i;
+	int i;
 
-	i = (int)ft_strlen_l(str);
-	if (params->width == -1)
-		ft_putlstr(str);
-	else
+	if (str == NULL)
 	{
-		if (params->right_al == 1)
-		{
-			ft_putlstr(str);
+		ft_putstr("(null)", 6);
+		return (6);
+	}
+	if (params->prec > ft_strlen_l(str) || params->prec < 0)
+		i = ft_strlen_l(str);
+	else
+		i = params->prec;
+	if (params->width == -1)
+		ft_putlstr(str, params->prec);
+	else {
+		if (params->right_al == 1) {
+			ft_putlstr(str, params->prec);
 			ft_put_n_sym(" ", params->width - i);
-		}
-		else
-		{
+		} else {
 			if (params->pad_zeros == 1)
 				ft_put_n_sym("0", params->width - i);
 			else
 				ft_put_n_sym(" ", params->width - i);
-			ft_putlstr(str);
+			ft_putlstr(str, params->prec);
 		}
-		return (0);
+		return (ft_ret_big(i, params->width, 0));
 	}
-	return (1);
+	return (i);
 }
-
 int ft_count_bits(wchar_t c)
 {
 	int i;
@@ -77,7 +80,7 @@ int ft_count_bits(wchar_t c)
 	return (i);
 }
 
-int ft_putlchar(wchar_t sym)
+int ft_putlchar(__darwin_wint_t sym)
 {
 	unsigned int mask[4];
 	unsigned int v;
@@ -139,7 +142,7 @@ int ft_putlchar(wchar_t sym)
 	return (0);
 }
 
-int ft_proc_lc(t_arg *params, wchar_t c)
+int ft_proc_lc(t_arg *params, __darwin_wint_t c)
 {
 
 	if (params->width == -1)
@@ -159,7 +162,7 @@ int ft_proc_lc(t_arg *params, wchar_t c)
 				ft_put_n_sym(" ", params->width - 1);
 			ft_putlchar(c);
 		}
-		return (0);
+		return (params->width);
 	}
 	return (1);
 }
@@ -271,27 +274,30 @@ int ft_lproc_oct(t_arg *params, uintmax_t i)
 {
 	long int num;
 	char *res;
+	int j;
 
-	if (i == 0)
+	if (i == 0 && params->prec > 0)
 		params->convert = 0;
 	num = i;
 	if (params->convert == 1 && params->prec <= 1)
 		params->width -= 1;
 	res = ft_convert(num, 8, params->prec);
+	j = (int)ft_strlen(res);
 	if (params->right_al == 1)
 		ft_pr_oct_f(params, res);
 	else
 		ft_pr_oct_s(params, res);
 	free(res);
 	if (params->convert == 1 && params->prec <= 1)
-		return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)) + 1);
-	return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)));
+		return (ft_ret_big(params->width, params->prec, j) + 1);
+	return (ft_ret_big(params->width, params->prec, j));
 }
 
 int ft_lproc_hex(t_arg *params, uintmax_t i)
 {
 	long int num;
 	char *res;
+	int j;
 
 	num = ft_lproc_types(i, params);
 	if (i == 0)
@@ -299,6 +305,7 @@ int ft_lproc_hex(t_arg *params, uintmax_t i)
 	if (params->convert == 1)
 		params->width -= 2;
 	res = ft_convert(num, 16, params->prec);
+	j = (int)ft_strlen(res);
 	if (params->spec == 'X')
 		ft_upcase(res);
 	if (params->right_al == 1)
@@ -307,18 +314,20 @@ int ft_lproc_hex(t_arg *params, uintmax_t i)
 		ft_pr_hex_s(params, res);
 	free(res);
 	if (params->convert == 1)
-		return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)) + 2);
-	return (ft_ret_big(params->width, params->prec, (int)ft_strlen(res)));
+		return (ft_ret_big(params->width, params->prec, j) + 2);
+	return (ft_ret_big(params->width, params->prec, j));
 }
 
 int	ft_data_proc_l(t_arg *params, va_list *args)
 {
+	if (params->spec == '!')
+		return (ft_proc_c(params, params->sym));
     if (params->spec == 'p')
         return (ft_proc_p(params, va_arg(*args, void *)));
 	if (params->spec == 's')
 		return (ft_proc_lstr(params, va_arg(*args, wchar_t *)));
 	if (params->spec == 'c')
-		return (ft_proc_lc(params, va_arg(*args, wchar_t )));
+		return (ft_proc_lc(params, va_arg(*args, __darwin_wint_t )));
 	if (params->spec == 'd' || params->spec == 'i' || params->spec == 'u')
 		return (ft_lproc_int(params, va_arg(*args, intmax_t)));
 	if (params->spec == 'o')
