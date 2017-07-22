@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <wchar.h>
 
 typedef struct s_arg{
 	char sym;
