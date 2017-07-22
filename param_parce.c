@@ -118,11 +118,11 @@ int ft_alter_spec(char *str, t_arg *params)
 	int i;
 
 	i = 0;
-	while(str[i] != '\0' && !(ft_isalpha(str[i])) && str[i] != '%')
+	while(str[i] != '\0' && (ft_test_flags(str, i) || ft_test_len(str, i) || ft_isdigit(str[i]) || str[i] == '.') && str[i] != '%')
 		i++;
 	params->spec = '!';
 	params->sym = str[i];
-	return(-1);
+	return(i);
 }
 
 int	ft_parse(char *str, t_arg *params)
@@ -143,10 +143,9 @@ int	ft_parse(char *str, t_arg *params)
 		i[2] = ft_parce_prec(str, params, &cur_pos);
 		i[3] = ft_parce_len(str, params, &cur_pos);
 	}
-	params->sym = str[cur_pos];
-	if (params->sym == '\0')
-		return (0);
-	if (spec_pos < 0)
-		return (cur_pos + 1);
+	if (!ft_test_len(str, cur_pos))
+		params->sym = str[cur_pos];
+	if (params->spec == '!' && params->sym != '\0')
+		return (spec_pos + 1);
 	return (spec_pos);
 }

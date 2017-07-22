@@ -12,6 +12,13 @@
 
 #include "ft_printf.h"
 
+int	ft_test_flags(char *str, int i) {
+
+	if (str[i] == ' ' || str[i] == '+' || str[i] == '0' || str[i] == '-' || str[i] == '#')
+		return (1);
+	return (0);
+}
+
 int	ft_test_len(char *str, int i) {
 
 	if (str[i] == 'l' || str[i] == 'h' || str[i] == 'L' || str[i] == 'j' || str[i] == 'z')
@@ -106,7 +113,7 @@ int		ft_fprintf(const char *format, va_list *args)
 		else if (format[i] != '\0')
 		{
 			i += ft_parse((char *) &format[i + 1], &params);
-			if (params.sym != '\0')
+			if (params.sym != '\0' || params.spec != '!')
 				num += ft_data_proc(&params, args);
 		}
 	}

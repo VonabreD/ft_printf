@@ -54,6 +54,8 @@ int ft_proc_str(t_arg *params, char *str)
 
 int ft_proc_c(t_arg *params, char c)
 {
+	if (params->spec == '!' && params->sym == '\0')
+		return (0);
 	if (params->width == -1)
 		ft_putchar(c);
 	else
@@ -73,6 +75,8 @@ int ft_proc_c(t_arg *params, char c)
 		}
 		return (params->width);
 	}
+	if (c == '%')
+		return (1);
 	return (1);
 }
 
