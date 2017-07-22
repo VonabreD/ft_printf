@@ -142,14 +142,14 @@ int ft_putlchar(__darwin_wint_t sym)
 	return (0);
 }
 
-int ft_proc_lc(t_arg *params, __darwin_wint_t c)
+int ft_proc_lc(t_arg *params, wint_t c)
 {
 
 	if (params->width == -1)
 		ft_putlchar(c);
 	else
 	{
-		if (params->right_al == 1)
+				if (params->right_al == 1)
 		{
 			ft_putlchar(c);
 			ft_put_n_sym(" ", params->width - 1);
@@ -327,7 +327,7 @@ int	ft_data_proc_l(t_arg *params, va_list *args)
 	if (params->spec == 's')
 		return (ft_proc_lstr(params, va_arg(*args, wchar_t *)));
 	if (params->spec == 'c')
-		return (ft_proc_lc(params, va_arg(*args, __darwin_wint_t )));
+		return (ft_proc_lc(params, va_arg(*args, wint_t )));
 	if (params->spec == 'd' || params->spec == 'i' || params->spec == 'u')
 		return (ft_lproc_int(params, va_arg(*args, intmax_t)));
 	if (params->spec == 'o')
