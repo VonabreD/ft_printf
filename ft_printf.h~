@@ -24,6 +24,8 @@ typedef struct s_arg{
 	int width;
 } t_arg;
 
+int	ft_test_flags(char *str, int i);
+int	ft_test_len(char *str, int i);
 int ft_ret_big(int a, int b, int c);
 int	ft_isalpha(int ch);
 int	ft_isdigit(int ch);
@@ -84,7 +86,7 @@ void ft_putlstr(wchar_t *str, int prec);
 int ft_strlen_l(wchar_t *str);
 int ft_proc_lstr(t_arg *params, wchar_t *str);
 int ft_count_bits(wchar_t c);
-int ft_putlchar(wint_t sym);
+int ft_putlchar(wchar_t sym);
 int ft_proc_lc(t_arg *params, wchar_t c);
 uintmax_t ft_lproc_types(intmax_t i, t_arg *params);
 void ft_lputnbr_long(uintmax_t num);
