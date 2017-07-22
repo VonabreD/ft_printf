@@ -85,7 +85,7 @@ int ft_strlen_l(wchar_t *str);
 int ft_proc_lstr(t_arg *params, wchar_t *str);
 int ft_count_bits(wchar_t c);
 int ft_putlchar(wint_t sym);
-int ft_proc_lc(t_arg *params, wchar_t c);
+int ft_proc_lc(t_arg *params, wint_t c);
 uintmax_t ft_lproc_types(intmax_t i, t_arg *params);
 void ft_lputnbr_long(uintmax_t num);
 int ft_lpr_in_f(t_arg *params, long int num, char zn);
